@@ -1,3 +1,6 @@
+#!/usr/bin/python
+# -*- coding: UTF-8 -*-
+
 """
 Classe que representa o tabuleiro do Jogo da Velha
 """
