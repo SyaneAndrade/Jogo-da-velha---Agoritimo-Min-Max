@@ -2,6 +2,11 @@ from tabuleiro import Tabuleiro
 from estado import Estado
 import random
 
+def gera_arvore(tabuleiroInicial):
+
+
+
+
 def main():
     tabuleiroInicial = Tabuleiro()
     pos_i = random.randint(0,2)

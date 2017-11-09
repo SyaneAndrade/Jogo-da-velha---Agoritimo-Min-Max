@@ -5,6 +5,7 @@ Classe que representa o estado
 do Jogo da Velha
 """
 class Estado(object):
+    listaDeFilhos = []
     def __init__(self, tabuleiro, pai, nivel, turn):
         self.tabuleiro = tabuleiro
         self.pai = pai
@@ -135,7 +136,14 @@ class Estado(object):
                     novoestado  = Estado(novotabuleiro, pai, nivel, turn)
                     estadonovospossiveis.append(novoestado)
         return estadonovospossiveis
-
+    
+    """
+    Method: getFilhos
+    Parameters: []
+    retorna a lista de filhos do estado se essa existe, esses filhos serão adcionados na geração da arvore
+    """
+    def getFilhos(self):
+        return self.listaDeFilhos
 
 def main():
     tabuleiro = Tabuleiro()
