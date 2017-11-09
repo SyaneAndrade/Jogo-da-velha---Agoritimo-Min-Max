@@ -3,7 +3,7 @@ Classe que representa o tabuleiro do Jogo da Velha
 """
 class Tabuleiro(object):
     def __init__(self):
-        self.board = [['X', 'O', 'X'], ['O', 'X', 'O'], ['O', 'X', 'O']]
+        self.board = [['-', '-', '-'], ['-', '-', '-'], ['-', '-', '-']]
 
     def imprimetabuleiro(self):
         print('\n'.join([''.join(['{:3}'.format(col) for col in linha]) for linha in self.board]))
