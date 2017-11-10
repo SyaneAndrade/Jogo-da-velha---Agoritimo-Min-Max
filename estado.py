@@ -96,12 +96,16 @@ class Estado(object):
     """
     def verificaEstadoFinal(self):
         if(self.verificaEmpate()):
+            print("1")
             return True
         if(self.verificaColuna(0) or self.verificaColuna(1) or self.verificaColuna(2)):
+            print("2")
             return True
         if(self.verificaLinha(0) or self.verificaLinha(1) or self.verificaLinha(2)):
+            print("3")
             return True
         if(self.verificaDiagonal()):
+            print("4")
             return True
         return False
 
@@ -131,14 +135,18 @@ class Estado(object):
                     if(self.turn == 'Max'):
                         turn = 'Min'
                         novotabuleiro.board[linha][col] = 'O'
+                        nova_utilidade = -1
                     if(self.turn == 'Min'):
                         turn = 'Max'
                         novotabuleiro.board[linha][col] = 'X'
+                        nova_utilidade = 1
                     pai = self
                     nivel = self.nivel + 1
                     novoestado  = Estado(novotabuleiro, pai, nivel, turn)
+                    novoestado.utilidade = nova_utilidade
                     estadonovospossiveis.append(novoestado)
-        return estadonovospossiveis
+        self.listaDeFilhos = estadonovospossiveis
+        return estadonovospossiveis 
     
     """
     Method: getFilhos
@@ -147,7 +155,7 @@ class Estado(object):
     """
     def getFilhos(self):
         return self.listaDeFilhos
-
+"""
 def main():
     tabuleiro = Tabuleiro()
     estadoinicial = Estado(tabuleiro, None, 0, 'Max')
@@ -160,3 +168,4 @@ def main():
 if __name__ == '__main__':
     main()
                     
+"""
