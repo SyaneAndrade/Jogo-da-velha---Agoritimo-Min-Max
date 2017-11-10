@@ -36,35 +36,55 @@ def gera_arvore(estado):
 
 def main():
 	tabuleiroInicial = Tabuleiro()
-	pos_i = random.randint(0,2)
-	pos_c = random.randint(0,2)
-	tabuleiroInicial.board[pos_i][pos_c] = 'X'
+	pos_i_max = random.randint(0,2)
+	pos_c_max = random.randint(0,2)
+	tabuleiroInicial.board[pos_i_max][pos_c_max] = 'X'
 
-	pos_i = random.randint(0,2)
-	pos_c = random.randint(0,2)
-	tabuleiroInicial.board[pos_i][pos_c] = 'O'
+	pos_i_min = random.randint(0,2)
+	pos_c_min = random.randint(0,2)
+
+	while(pos_c_min == pos_c_max and pos_i_min == pos_i_max):
+		pos_i_min = random.randint(0,2)
+		pos_c_min = random.randint(0,2)	
+	
+	tabuleiroInicial.board[pos_i_min][pos_c_min] = 'O'
 
 	estadoinicial = Estado(tabuleiroInicial, None, 0, 'Min')
-	
-
+	 
 	numeroEstados = gera_arvore(estadoinicial)
-	#imprime_arvore(estadoinicial)
 	print(numeroEstados)
+
 	estadoinicial.tabuleiro.imprimetabuleiro()
 
+	print(estadoinicial.verificaEstadoFinal())
 	while(estadoinicial.verificaEstadoFinal() == False):
-		print("Vez de "+estadoinicial.turn+"\nResultado:")
+		if(estadoinicial.turn == 'Min'):
+			estadoinicial.listaDeFilhos.sort(key=lambda x: x.utilidade, reverse=True)
+			print("Vez de Max\nResultado:")
+		else:
+			estadoinicial.listaDeFilhos.sort(key=lambda x: x.utilidade, reverse=False)
+			print("Vez de Min\nResultado:")
+
+
+		for i in estadoinicial.listaDeFilhos:
+			print(i.utilidade)
+
+
 
 		for filho in estadoinicial.listaDeFilhos:
+			
 
-			if(estadoinicial.turn == 'Min' and filho.utilidade == -1):
+			if(estadoinicial.turn == 'Max' and filho.utilidade <= 0):
 				estadoinicial = filho
-				
-			if(estadoinicial.turn == 'Max' and filho.utilidade == 1):
+				break
+					
+			if(estadoinicial.turn == 'Min' and filho.utilidade >= 0):
 				estadoinicial = filho
+				break
 
-			estadoinicial.tabuleiro.imprimetabuleiro()
+		estadoinicial.tabuleiro.imprimetabuleiro()
 
+		
 	
 
 if __name__ == '__main__':

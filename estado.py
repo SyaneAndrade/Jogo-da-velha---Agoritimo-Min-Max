@@ -36,7 +36,7 @@ class Estado(object):
         pos = self.tabuleiro.board[0][col]
         afirmacao = False
         for linha in range(1,3):
-            if(pos == self.tabuleiro.board[linha][col]):
+            if(pos == self.tabuleiro.board[linha][col] and pos != '-'):
                 afirmacao = True
             else:
                 afirmacao = False
@@ -54,7 +54,7 @@ class Estado(object):
         pos = self.tabuleiro.board[linha][0]
         afirmacao = False
         for col in range(1,3):
-            if(pos == self.tabuleiro.board[linha][col]):
+            if(pos == self.tabuleiro.board[linha][col] and pos!='-'):
                 afirmacao = True
             else:
                 afirmacao = False
@@ -69,6 +69,8 @@ class Estado(object):
     verifica se existe um jogo ganho nas diagonais do tabuleiro
     """
     def verificaDiagonal(self):
+        if(self.tabuleiro.board[1][1] == '-'):
+            return False
         if(self.tabuleiro.board[0][0] == self.tabuleiro.board[1][1] == self.tabuleiro.board[2][2]):
             self.vitoriaJogador(self.tabuleiro.board[0][0])
             return True
@@ -96,18 +98,138 @@ class Estado(object):
     """
     def verificaEstadoFinal(self):
         if(self.verificaEmpate()):
-            print("1")
             return True
         if(self.verificaColuna(0) or self.verificaColuna(1) or self.verificaColuna(2)):
-            print("2")
             return True
         if(self.verificaLinha(0) or self.verificaLinha(1) or self.verificaLinha(2)):
-            print("3")
             return True
         if(self.verificaDiagonal()):
-            print("4")
             return True
         return False
+    """
+    Method: verificaColuna
+    Parameters: [col]
+    verifica se existe um jogo ganho nas colunas do tabuleiro
+    """
+    def verificaColunaCV_1(self, col, s):
+        pos = s
+        afirmacao = False
+        for linha in range(0,3):
+            if(pos == self.tabuleiro.board[linha][col]):
+                afirmacao = True
+            else:
+                if( self.tabuleiro.board[linha][col] != '-' != s):
+                    afirmacao = False
+                break
+        if afirmacao:
+            self.vitoriaJogador(self.tabuleiro.board[0][col])
+        return afirmacao
+
+    """
+    Method: verificaLinha
+    Parameters: [linha]
+    verifica se existe um jogo ganho nas linhas do tabuleiro
+    """
+    def verificaLinhaCV_1(self, linha, s):
+        pos = s
+        afirmacao = False
+        for col in range(0,3):
+            if(pos == self.tabuleiro.board[linha][col]):
+                afirmacao = True
+            else:
+                if( self.tabuleiro.board[linha][col] != '-' != s):
+                    afirmacao = False
+                break
+        return afirmacao
+
+    """
+    Method: verificaDiagonal
+    Parameters: []
+    verifica se existe um jogo ganho nas diagonais do tabuleiro
+    """
+    def verificaDiagonalCV_1(self, s):
+
+        if((self.tabuleiro.board[0][0] == self.tabuleiro.board[2][2] and self.tabuleiro.board[1][1] == '-') or ( self.tabuleiro.board[0][0] == self.tabuleiro.board[1][1] and self.tabuleiro.board[2][2] == '-')):
+            return True
+        if((self.tabuleiro.board[2][0] == self.tabuleiro.board[0][2] and self.tabuleiro.board[1][1] == '1') or (self.tabuleiro.board[2][0] == self.tabuleiro.board[1][1] and self.tabuleiro.board[0][2] == '-')):
+            return True
+        return False
+
+    """
+    Method: verificaColuna
+    Parameters: [col]
+    verifica se existe um jogo ganho nas colunas do tabuleiro
+    """
+    def verificaColunaComVar(self, col, s):
+        pos = self.tabuleiro.board[0][col]
+        afirmacao = False
+        for linha in range(1,3):
+            if(pos == self.tabuleiro.board[linha][col] and pos != '-'):
+                afirmacao = True
+            else:
+                afirmacao = False
+                break
+        #if afirmacao:
+         #   self.vitoriaJogador(self.tabuleiro.board[0][col])
+        return afirmacao
+
+    """
+    Method: verificaLinha
+    Parameters: [linha]
+    verifica se existe um jogo ganho nas linhas do tabuleiro
+    """
+    def verificaLinhaComVar(self, linha, s):
+        pos = self.tabuleiro.board[linha][0]
+        afirmacao = False
+        for col in range(1,3):
+            if(pos == self.tabuleiro.board[linha][col] and pos!='-'):
+                afirmacao = True
+            else:
+                afirmacao = False
+                break
+        #if afirmacao:
+            #self.vitoriaJogador(self.tabuleiro.board[linha][0])
+        return afirmacao
+
+    """
+    Method: verificaDiagonal
+    Parameters: []
+    verifica se existe um jogo ganho nas diagonais do tabuleiro
+    """
+    def verificaDiagonalComVar(self, s):
+        if(self.tabuleiro.board[1][1] == '-'):
+            return False
+        if(self.tabuleiro.board[0][0] == self.tabuleiro.board[1][1] == self.tabuleiro.board[2][2]):
+            #self.vitoriaJogador(self.tabuleiro.board[0][0])
+            return True
+        if(self.tabuleiro.board[2][0] == self.tabuleiro.board[1][1] == self.tabuleiro.board[0][2]):
+            #self.vitoriaJogador(self.tabuleiro.board[1][1])
+            return True
+        return False
+
+    """
+    Method: verificaDistanciaFinal
+    Parameters: []
+    verifica se existe um jogo ganho do tabuleiro ou se esta quase, diferenciando por pontuacao
+    """
+    def verificaDistanciaFinal(self,s):
+        if(self.verificaEmpate()):
+            return 0
+        if(self.verificaColunaComVar(0,s) or self.verificaColunaComVar(1,s) or self.verificaColunaComVar(2,s)):
+            return 100
+        if(self.verificaLinhaComVar(0,s) or self.verificaLinhaComVar(1,s) or self.verificaLinhaComVar(2,s)):
+            return 100
+        if(self.verificaDiagonalComVar(s)):
+            return 100
+        if(self.verificaColunaCV_1(0,s) or self.verificaColunaCV_1(1,s) or self.verificaColunaCV_1(2,s)):
+            return 50
+        if(self.verificaLinhaCV_1(0,s) or self.verificaLinhaCV_1(1,s) or self.verificaLinhaCV_1(2,s)):
+            return 50
+        if(self.verificaDiagonalCV_1(s)):
+            return 50
+
+        return 0
+
 
     """
     Method: posicaoValida
@@ -134,16 +256,21 @@ class Estado(object):
                     turn = ''
                     if(self.turn == 'Max'):
                         turn = 'Min'
+                        mark = 'O'
                         novotabuleiro.board[linha][col] = 'O'
-                        nova_utilidade = -1
+                        
                     if(self.turn == 'Min'):
                         turn = 'Max'
+                        mark = 'X'
                         novotabuleiro.board[linha][col] = 'X'
-                        nova_utilidade = 1
+                        
                     pai = self
                     nivel = self.nivel + 1
                     novoestado  = Estado(novotabuleiro, pai, nivel, turn)
-                    novoestado.utilidade = nova_utilidade
+                    novoestado.utilidade = novoestado.verificaDistanciaFinal(mark)
+                    if(mark == 'O'):
+                        novoestado.utilidade = -(novoestado.utilidade)
+
                     estadonovospossiveis.append(novoestado)
         self.listaDeFilhos = estadonovospossiveis
         return estadonovospossiveis 
